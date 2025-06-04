@@ -11,29 +11,31 @@ int main()
     system("mode con cols=130 lines=60");   // 设置控制台窗口大小
     init_system();                          // 初始化系统数据
     system("color 0E");
-    SetConsoleOutputCP(936);
+    SetConsoleOutputCP(65001);
     while (1)
     {
-        SetConsoleOutputCP(936);
+        SetConsoleOutputCP(65001);
         system("cls"); // 清屏
         option = Menu();
 
         // 判断是否需要先添加项目或学生
         if ((option >= 3 && option <= 5 || option == 11 || option == 13 || option == 14 || option == 15 || option == 16 || option == 17 || option == 18 || option == 19 || option == 20) && (event_head->next == NULL))
         {
-            SetConsoleOutputCP(936);
+            SetConsoleOutputCP(65001);
+            system("cls");
             printf("系统中尚无项目信息，请先输入！\n");
             system("pause");
             continue;
         }
         if ((option >= 8 && option <= 10 || option == 11 || option == 13 || option == 14 || option == 15 || option == 17 || option == 18 || option == 19 || option == 20) && (student_head->next == NULL))
         {
-            SetConsoleOutputCP(936);
+            SetConsoleOutputCP(65001);
+            system("cls");
             printf("系统中尚无学生信息，请先输入！\n");
             system("pause");
             continue;
         }
-
+        system("cls"); // 清屏
         switch (option)
         {
         case 1:
@@ -107,7 +109,8 @@ int main()
             break;
             system("pause");
         }
-        getchar();
+        getchar(); // 等待用户输入
     }
+
     return 0;
 }

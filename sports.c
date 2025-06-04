@@ -68,11 +68,9 @@ int Menu(void)
     int posy = 5;
     int option; // 保存用户输入的操作代号的变量
     int i, j;
-    event_head->next = NULL;
-    student_head->next = NULL;
-    reg_head->next = NULL;
+
     SetPosition(POS_X3, posy);
-    SetConsoleOutputCP(936);
+    SetConsoleOutputCP(65001);
     printf("运动会报名系统\n"); // 输出系统名
     // 输出系统名和功能说明之间的两行短横线
     for (i = 0; i < 2; i++)
@@ -85,67 +83,67 @@ int Menu(void)
     }
     // 输出系统支持的功能和对应的功能代号
     SetPosition(POS_X1, ++posy);
-    SetConsoleOutputCP(936);
+    SetConsoleOutputCP(65001);
     printf("1.显示所有项目信息");
     SetPosition(POS_X4, posy);
-    SetConsoleOutputCP(936);
+    SetConsoleOutputCP(65001);
     printf("2.添加运动项目信息");
     SetPosition(POS_X1, posy += 2);
-    SetConsoleOutputCP(936);
+    SetConsoleOutputCP(65001);
     printf("3.删除运动项目信息");
     SetPosition(POS_X4, posy);
-    SetConsoleOutputCP(936);
+    SetConsoleOutputCP(65001);
     printf("4.修改运动项目信息");
     SetPosition(POS_X1, posy += 2);
-    SetConsoleOutputCP(936);
+    SetConsoleOutputCP(65001);
     printf("5.查找运动项目信息");
     SetPosition(POS_X4, posy);
-    SetConsoleOutputCP(936);
+    SetConsoleOutputCP(65001);
     printf("6.显示所有学生信息");
     SetPosition(POS_X1, posy += 2);
-    SetConsoleOutputCP(936);
+    SetConsoleOutputCP(65001);
     printf("7.添加学生信息");
     SetPosition(POS_X4, posy);
-    SetConsoleOutputCP(936);
+    SetConsoleOutputCP(65001);
     printf("8.删除学生信息");
     SetPosition(POS_X1, posy += 2);
-    SetConsoleOutputCP(936);
+    SetConsoleOutputCP(65001);
     printf("9.修改学生信息");
     SetPosition(POS_X4, posy);
-    SetConsoleOutputCP(936);
+    SetConsoleOutputCP(65001);
     printf("10.查找学生信息");
     SetPosition(POS_X1, posy += 2);
-    SetConsoleOutputCP(936);
+    SetConsoleOutputCP(65001);
     printf("11.学生报名");
     SetPosition(POS_X4, posy);
-    SetConsoleOutputCP(936);
+    SetConsoleOutputCP(65001);
     printf("12.取消报名");
     SetPosition(POS_X1, posy += 2);
-    SetConsoleOutputCP(936);
+    SetConsoleOutputCP(65001);
     printf("13.显示所有报名信息");
     SetPosition(POS_X4, posy);
-    SetConsoleOutputCP(936);
+    SetConsoleOutputCP(65001);
     printf("14.查找报名信息");
     SetPosition(POS_X1, posy += 2);
-    SetConsoleOutputCP(936);
+    SetConsoleOutputCP(65001);
     printf("15.录入成绩");
     SetPosition(POS_X4, posy);
-    SetConsoleOutputCP(936);
+    SetConsoleOutputCP(65001);
     printf("16.统计每个项目的报名人数");
     SetPosition(POS_X1, posy += 2);
-    SetConsoleOutputCP(936);
+    SetConsoleOutputCP(65001);
     printf("17.统计每个学院的报名人数");
     SetPosition(POS_X4, posy);
-    SetConsoleOutputCP(936);
+    SetConsoleOutputCP(65001);
     printf("18.统计每个学生的报名项目数");
     SetPosition(POS_X1, posy += 2);
-    SetConsoleOutputCP(936);
+    SetConsoleOutputCP(65001);
     printf("19.查询比赛成绩");
     SetPosition(POS_X4, posy);
-    SetConsoleOutputCP(936);
+    SetConsoleOutputCP(65001);
     printf("20.保存统计信息到文件");
     SetPosition(POS_X1, posy += 2);
-    SetConsoleOutputCP(936);
+    SetConsoleOutputCP(65001);
     printf("0.退出");
     // 输出系统支持的功能与输入提示语之间的两行短横线
     for (i = 0; i < 2; i++)
@@ -170,10 +168,14 @@ void display_all_events() // 显示所有运动项目信息
         printf("%d %s %s %s %s %s %s %d %d\n", temp->event_id, temp->name, temp->type, temp->gender_type, temp->time, temp->location, temp->status, temp->max_participants, temp->current_participants);
         temp = temp->next;
     }
+    getchar();
 }
 // 添加运动项目
 void add_event()
 {
+
+    int posy = 8;
+    SetPosition(POS_X1, posy);
     SportEvent *new_event = (SportEvent *)malloc(sizeof(SportEvent));
     if (!new_event)
     {
@@ -252,7 +254,7 @@ void delete_event()
     }
     if (temp == NULL)
     {
-        SetConsoleOutputCP(936);
+        SetConsoleOutputCP(65001);
         printf("没有找到该生记录!\n");
         return;
     }
@@ -265,9 +267,9 @@ void delete_event()
     else
     {
         char ch;
-        SetConsoleOutputCP(936);
+        SetConsoleOutputCP(65001);
         printf("%10.2f%10.2f\n");
-        SetConsoleOutputCP(936);
+        SetConsoleOutputCP(65001);
         printf("请确认是否要删除这条记录？(Y/y, N/n):");
         getchar();
         scanf("%c", &ch);
@@ -276,19 +278,19 @@ void delete_event()
         {
             prev->next = temp->next;
             free(temp);
-            SetConsoleOutputCP(936);
+            SetConsoleOutputCP(65001);
             printf("删除完毕\n");
             return;
         }
         else if (ch == 'N' || ch == 'n')
         {
-            SetConsoleOutputCP(936);
+            SetConsoleOutputCP(65001);
             printf("找到了这个学生的记录，但不删除\n");
             return;
         }
         else
         {
-            SetConsoleOutputCP(936);
+            SetConsoleOutputCP(65001);
             printf("输入出错\n");
             return;
         }
@@ -311,7 +313,7 @@ void modify_event()
     }
     if (temp == NULL)
     {
-        SetConsoleOutputCP(936);
+        SetConsoleOutputCP(65001);
         printf("没有找到该项目记录!\n");
         return;
     }
@@ -324,9 +326,9 @@ void modify_event()
     else
     {
         char ch;
-        SetConsoleOutputCP(936);
+        SetConsoleOutputCP(65001);
         printf("%10.2f%10.2f\n");
-        SetConsoleOutputCP(936);
+        SetConsoleOutputCP(65001);
         printf("请确认是否要修改这条记录?(Y/y, N/n):");
         getchar();
         scanf("%c", &ch);
@@ -376,22 +378,22 @@ void modify_event()
                 getchar(); // 清除换行符
                 break;
             default:
-                SetConsoleOutputCP(936);
+                SetConsoleOutputCP(65001);
                 printf("无效选择!\n");
             }
-            SetConsoleOutputCP(936);
+            SetConsoleOutputCP(65001);
             printf("修改完毕\n");
             return;
         }
         else if (ch == 'N' || ch == 'n')
         {
-            SetConsoleOutputCP(936);
+            SetConsoleOutputCP(65001);
             printf("找到了这个学生的记录，但不修改\n");
             return;
         }
         else
         {
-            SetConsoleOutputCP(936);
+            SetConsoleOutputCP(65001);
             printf("输入出错\n");
             return;
         }
@@ -413,7 +415,7 @@ void search_event()
     }
     if (temp == NULL)
     {
-        SetConsoleOutputCP(936);
+        SetConsoleOutputCP(65001);
         printf("没有找到该项目记录!\n");
         return;
     }
@@ -561,7 +563,7 @@ void delete_student()
     }
     if (temp == NULL)
     {
-        SetConsoleOutputCP(936);
+        SetConsoleOutputCP(65001);
         printf("没有找到该学生记录!\n");
         return;
     }
@@ -575,9 +577,9 @@ void delete_student()
     else
     {
         char ch;
-        SetConsoleOutputCP(936);
+        SetConsoleOutputCP(65001);
         printf("%10.2f%10.2f\n");
-        SetConsoleOutputCP(936);
+        SetConsoleOutputCP(65001);
         printf("请确认是否要删除这条记录？(Y/y, N/n):");
         getchar();
         scanf("%c", &ch);
@@ -585,19 +587,19 @@ void delete_student()
         {
             prev->next = temp->next;
             free(temp);
-            SetConsoleOutputCP(936);
+            SetConsoleOutputCP(65001);
             printf("删除完毕\n");
             return;
         }
         else if (ch == 'N' || ch == 'n')
         {
-            SetConsoleOutputCP(936);
+            SetConsoleOutputCP(65001);
             printf("找到了这个学生的记录，但不删除\n");
             return;
         }
         else
         {
-            SetConsoleOutputCP(936);
+            SetConsoleOutputCP(65001);
             printf("输入出错\n");
             return;
         }
@@ -622,7 +624,7 @@ void modify_student()
     }
     if (temp == NULL)
     {
-        SetConsoleOutputCP(936);
+        SetConsoleOutputCP(65001);
         printf("没有找到该学生记录!\n");
         return;
     }
@@ -636,9 +638,9 @@ void modify_student()
     else
     {
         char ch;
-        SetConsoleOutputCP(936);
+        SetConsoleOutputCP(65001);
         printf("%10.2f%10.2f\n");
-        SetConsoleOutputCP(936);
+        SetConsoleOutputCP(65001);
         printf("请确认是否要修改这条记录?(Y/y, N/n):");
         getchar();
         scanf("%c", &ch);
@@ -677,23 +679,23 @@ void modify_student()
                 temp->contact[strcspn(temp->contact, "\n")] = '\0';
                 break;
             default:
-                SetConsoleOutputCP(936);
+                SetConsoleOutputCP(65001);
                 printf("无效选择!\n");
                 return;
             }
-            SetConsoleOutputCP(936);
+            SetConsoleOutputCP(65001);
             printf("修改完毕\n");
             return;
         }
         else if (ch == 'N' || ch == 'n')
         {
-            SetConsoleOutputCP(936);
+            SetConsoleOutputCP(65001);
             printf("找到了这个学生的记录，但不修改\n");
             return;
         }
         else
         {
-            SetConsoleOutputCP(936);
+            SetConsoleOutputCP(65001);
             printf("输入出错\n");
             return;
         }
@@ -716,7 +718,7 @@ void search_student()
     }
     if (temp == NULL)
     {
-        SetConsoleOutputCP(936);
+        SetConsoleOutputCP(65001);
         printf("没有找到该学生记录!\n");
         return;
     }
