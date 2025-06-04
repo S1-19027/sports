@@ -75,9 +75,11 @@ int main()
             break;
         case 0:
             save_all_data();
-            printf("数据已保存，感谢使用！\n");
+            SetPosition(0, 10);
+            printf("退出！\n");
             return 0;
         default:
+            SetPosition(0, 10);
             printf("无效选择，请重新输入！\n");
             break;
         }

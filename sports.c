@@ -109,7 +109,6 @@ int Menu(void)
     SetPosition(POS_X4, posy);
     SetConsoleOutputCP(936);
     printf("20.保存统计信息到文件");
-
     SetPosition(POS_X1, posy += 2);
     SetConsoleOutputCP(936);
     printf("0.退出");
@@ -195,49 +194,49 @@ void add_event()
     printf("\n运动项目添加成功!\n");
 }
 // 学生管理菜单
-void manage_students()
-{
-    int choice;
-    do
-    {
-        system("clear || cls");
-        printf("\n===== 学生信息管理 =====\n");
-        printf("1. 显示所有学生\n");
-        printf("2. 添加学生信息\n");
-        printf("3. 删除学生信息\n");
-        printf("4. 修改学生信息\n");
-        printf("5. 查找学生信息\n");
-        printf("0. 返回主菜单\n");
-        printf("请选择: ");
-        scanf("%d", &choice);
-        clear_input_buffer();
+// void manage_students()
+// {
+//     int choice;
+//     do
+//     {
+//         system("clear || cls");
+//         printf("\n===== 学生信息管理 =====\n");
+//         printf("1. 显示所有学生\n");
+//         printf("2. 添加学生信息\n");
+//         printf("3. 删除学生信息\n");
+//         printf("4. 修改学生信息\n");
+//         printf("5. 查找学生信息\n");
+//         printf("0. 返回主菜单\n");
+//         printf("请选择: ");
+//         scanf("%d", &choice);
+//         clear_input_buffer();
 
-        switch (choice)
-        {
-        case 1:
-            display_all_students();
-            break;
-        case 2:
-            add_student();
-            break;
-        case 3:
-            delete_student();
-            break;
-        case 4:
-            modify_student();
-            break;
-        case 5:
-            search_student();
-            break;
-        case 0:
-            return;
-        default:
-            printf("无效选择!\n");
-        }
-        printf("\n按任意键继续...");
-        getchar();
-    } while (choice != 0);
-}
+//         switch (choice)
+//         {
+//         case 1:
+//             display_all_students();
+//             break;
+//         case 2:
+//             add_student();
+//             break;
+//         case 3:
+//             delete_student();
+//             break;
+//         case 4:
+//             modify_student();
+//             break;
+//         case 5:
+//             search_student();
+//             break;
+//         case 0:
+//             return;
+//         default:
+//             printf("无效选择!\n");
+//         }
+//         printf("\n按任意键继续...");
+//         getchar();
+//     } while (choice != 0);
+// }
 
 // 添加学生信息
 void add_student()
@@ -295,49 +294,49 @@ void add_student()
     printf("\n学生信息添加成功!\n");
 }
 // 报名管理菜单
-void manage_registrations()
-{
-    int choice;
-    do
-    {
-        system("clear || cls");
-        printf("\n===== 报名管理 =====\n");
-        printf("1. 显示所有报名\n");
-        printf("2. 学生报名\n");
-        printf("3. 取消报名\n");
-        printf("4. 查找报名\n");
-        printf("5. 录入成绩\n");
-        printf("0. 返回主菜单\n");
-        printf("请选择: ");
-        scanf("%d", &choice);
-        clear_input_buffer();
+// void manage_registrations()
+// {
+//     int choice;
+//     do
+//     {
+//         system("clear || cls");
+//         printf("\n===== 报名管理 =====\n");
+//         printf("1. 显示所有报名\n");
+//         printf("2. 学生报名\n");
+//         printf("3. 取消报名\n");
+//         printf("4. 查找报名\n");
+//         printf("5. 录入成绩\n");
+//         printf("0. 返回主菜单\n");
+//         printf("请选择: ");
+//         scanf("%d", &choice);
+//         clear_input_buffer();
 
-        switch (choice)
-        {
-        case 1:
-            display_all_registrations();
-            break;
-        case 2:
-            register_student();
-            break;
-        case 3:
-            cancel_registration();
-            break;
-        case 4:
-            search_registration();
-            break;
-        case 5:
-            enter_score();
-            break;
-        case 0:
-            return;
-        default:
-            printf("无效选择!\n");
-        }
-        printf("\n按任意键继续...");
-        getchar();
-    } while (choice != 0);
-}
+//         switch (choice)
+//         {
+//         case 1:
+//             display_all_registrations();
+//             break;
+//         case 2:
+//             register_student();
+//             break;
+//         case 3:
+//             cancel_registration();
+//             break;
+//         case 4:
+//             search_registration();
+//             break;
+//         case 5:
+//             enter_score();
+//             break;
+//         case 0:
+//             return;
+//         default:
+//             printf("无效选择!\n");
+//         }
+//         printf("\n按任意键继续...");
+//         getchar();
+//     } while (choice != 0);
+// }
 
 // 学生报名
 void register_student()

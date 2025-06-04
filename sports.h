@@ -64,10 +64,10 @@ typedef struct Registration
 
 // 函数声明
 void init_system();
-void main_menu();
-
+int Menu(void);                 // 操作菜单
+void SetPosition(int x, int y); // 设置输出内容在控制台窗口中的起始位置
 // 运动项目管理函数
-void manage_events();
+// void manage_events();
 void display_all_events(); // 显示所有运动项目信息
 void add_event();          // 添加运动项目信息
 void delete_event();       // 删除运动项目信息
@@ -75,7 +75,7 @@ void modify_event();       // 修改运动项目信息
 void search_event();       // 查找运动项目信息
 
 // 学生管理函数
-void manage_students();
+// void manage_students();
 void display_all_students(); // 显示所有学生信息
 void add_student();          // 添加学生信息
 void delete_student();       // 删除学生信息
@@ -83,7 +83,7 @@ void modify_student();       // 修改学生信息
 void search_student();       // 查找学生信息
 
 // 报名管理函数
-void manage_registrations();
+// void manage_registrations();
 void display_all_registrations(); // 显示所有报名信息
 void register_student();          // 学生报名
 void cancel_registration();       // 取消报名
@@ -91,7 +91,7 @@ void search_registration();       // 查找报名信息
 void enter_score();               // 录入成绩
 
 // 统计查询函数
-void statistics_menu();             //
+// void statistics_menu();
 void count_event_participants();    // 统计每个项目的报名人数
 void count_college_participants();  // 统计每个学院的报名人数
 void count_student_registrations(); // 统计每个学生的报名项目数
