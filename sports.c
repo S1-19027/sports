@@ -35,6 +35,9 @@ int Menu(void)
     int posy = 5;
     int option; // 保存用户输入的操作代号的变量
     int i, j;
+    event_head->next = NULL;
+    student_head->next = NULL;
+    reg_head->next = NULL;
     SetPosition(POS_X3, posy);
     SetConsoleOutputCP(936);
     printf("运动会报名系统\n"); // 输出系统名
@@ -127,7 +130,15 @@ int Menu(void)
     scanf("%d", &option);
     return option;
 }
-
+void display_all_events() // 显示所有运动项目信息
+{
+    SportEvent *temp = event_head->next;
+    while (temp != NULL)
+    {
+        printf("%d %s %s %s %s %s %s %d %d\n", temp->event_id, temp->name, temp->type, temp->gender_type, temp->time, temp->location, temp->status, temp->max_participants, temp->current_participants);
+        temp = temp->next;
+    }
+}
 // 添加运动项目
 void add_event()
 {
@@ -143,7 +154,7 @@ void add_event()
     // 输入项目信息
     printf("请输入项目编号: ");
     scanf("%d", &new_event->event_id);
-    clear_input_buffer();
+    getchar();
 
     printf("请输入项目名称: ");
     fgets(new_event->name, MAX_NAME_LEN, stdin);
@@ -171,15 +182,15 @@ void add_event()
 
     printf("请输入报名人数上限: ");
     scanf("%d", &new_event->max_participants);
-    clear_input_buffer();
+    getchar();
 
     new_event->current_participants = 0;
     new_event->next = NULL;
 
     // 添加到链表
-    if (event_head == NULL)
+    if (event_head->next == NULL)
     {
-        event_head = new_event;
+        event_head->next = new_event;
     }
     else
     {
@@ -192,6 +203,195 @@ void add_event()
     }
 
     printf("\n运动项目添加成功!\n");
+}
+// 删除运动项目
+void delete_event()
+{
+    printf("请输入你要删除的项目id:");
+    int event_id;
+    scanf("%d", &event_id);
+    SportEvent *temp = event_head->next;
+    SportEvent *prev = NULL;
+
+    while (temp != NULL && temp->event_id != event_id)
+    {
+        prev = temp;
+        temp = temp->next;
+    }
+    if (temp == NULL)
+    {
+        SetConsoleOutputCP(936);
+        printf("没有找到该生记录!\n");
+        return;
+    }
+    if (prev == NULL)
+    {
+        event_head = temp->next;
+        return;
+    }
+
+    else
+    {
+        char ch;
+        SetConsoleOutputCP(936);
+        printf("%10.2f%10.2f\n");
+        SetConsoleOutputCP(936);
+        printf("请确认是否要删除这条记录？(Y/y, N/n):");
+        getchar();
+        scanf("%c", &ch);
+        // 选择
+        if (ch == 'Y' || ch == 'y')
+        {
+            prev->next = temp->next;
+            free(temp);
+            SetConsoleOutputCP(936);
+            printf("删除完毕\n");
+            return;
+        }
+        else if (ch == 'N' || ch == 'n')
+        {
+            SetConsoleOutputCP(936);
+            printf("找到了这个学生的记录，但不删除\n");
+            return;
+        }
+        else
+        {
+            SetConsoleOutputCP(936);
+            printf("输入出错\n");
+            return;
+        }
+    }
+}
+// 修改运动项目信息
+
+void modify_event()
+{
+    printf("请输入你要修改的项目id:");
+    int event_id;
+    scanf("%d", &event_id);
+    SportEvent *temp = event_head->next;
+    SportEvent *prev = NULL;
+
+    while (temp != NULL && temp->event_id != event_id)
+    {
+        prev = temp;
+        temp = temp->next;
+    }
+    if (temp == NULL)
+    {
+        SetConsoleOutputCP(936);
+        printf("没有找到该项目记录!\n");
+        return;
+    }
+    if (prev == NULL)
+    {
+        event_head = temp->next;
+        return;
+    }
+
+    else
+    {
+        char ch;
+        SetConsoleOutputCP(936);
+        printf("%10.2f%10.2f\n");
+        SetConsoleOutputCP(936);
+        printf("请确认是否要修改这条记录?(Y/y, N/n):");
+        getchar();
+        scanf("%c", &ch);
+        // 选择
+        if (ch == 'Y' || ch == 'y')
+        {
+            printf("请输入需要修改的信息,1为项目名称,2为项目类型,3为参赛类型,4为比赛时间,5为比赛地点,6为项目状态,7为报名人数上限\n");
+            int choice;
+            scanf("%d", &choice);
+            getchar(); // 清除换行符
+            switch (choice)
+            {
+            case 1:
+                printf("请输入新的项目名称: ");
+                fgets(temp->name, MAX_NAME_LEN, stdin);
+                temp->name[strcspn(temp->name, "\n")] = '\0';
+                break;
+
+            case 2:
+                printf("请输入新的项目类型(田赛/径赛):");
+                fgets(temp->type, MAX_TYPE_LEN, stdin);
+                temp->type[strcspn(temp->type, "\n")] = '\0';
+                break;
+            case 3:
+                printf("请输入新的参赛类型(男子项目/女子项目):");
+                fgets(temp->gender_type, MAX_TYPE_LEN, stdin);
+                temp->gender_type[strcspn(temp->gender_type, "\n")] = '\0';
+                break;
+            case 4:
+                printf("请输入新的比赛时间(YYYY-MM-DD HH:MM):");
+                fgets(temp->time, 20, stdin);
+                temp->time[strcspn(temp->time, "\n")] = '\0';
+                break;
+            case 5:
+                printf("请输入新的比赛地点:");
+                fgets(temp->location, MAX_LOCATION_LEN, stdin);
+                temp->location[strcspn(temp->location, "\n")] = '\0';
+                break;
+            case 6:
+                printf("请输入新的项目状态(报名中/已结束):");
+                fgets(temp->status, MAX_TYPE_LEN, stdin);
+                temp->status[strcspn(temp->status, "\n")] = '\0';
+                break;
+            case 7:
+                printf("请输入新的报名人数上限:");
+                scanf("%d", &temp->max_participants);
+                getchar(); // 清除换行符
+                break;
+            default:
+                SetConsoleOutputCP(936);
+                printf("无效选择!\n");
+            }
+            SetConsoleOutputCP(936);
+            printf("修改完毕\n");
+            return;
+        }
+        else if (ch == 'N' || ch == 'n')
+        {
+            SetConsoleOutputCP(936);
+            printf("找到了这个学生的记录，但不修改\n");
+            return;
+        }
+        else
+        {
+            SetConsoleOutputCP(936);
+            printf("输入出错\n");
+            return;
+        }
+    }
+}
+
+// 查找运动项目信息
+void search_event()
+{
+    printf("请输入你要查找的项目id:");
+    int event_id;
+    scanf("%d", &event_id);
+    SportEvent *temp = event_head->next;
+
+    while (temp != NULL && temp->event_id != event_id)
+    {
+        
+        temp = temp->next;
+    }
+    if (temp == NULL)
+    {
+        SetConsoleOutputCP(936);
+        printf("没有找到该项目记录!\n");
+        return;
+    }
+
+    else
+    {
+        {
+            printf("%d %s %s %s %s %s %s %d %d\n", temp->event_id, temp->name, temp->type, temp->gender_type, temp->time, temp->location, temp->status, temp->max_participants, temp->current_participants);
+        }
+    }
 }
 // 学生管理菜单
 // void manage_students()
@@ -238,6 +438,24 @@ void add_event()
 //     } while (choice != 0);
 // }
 
+// 显示所有学生信息
+void display_all_students()
+{
+    Student *temp = student_head->next;
+    if (temp == NULL)
+    {
+        printf("没有学生信息!\n");
+        return;
+    }
+    printf("\n--- 所有学生信息 ---\n");
+    printf("学号\t姓名\t性别\t班级\t学院\t联系方式\n");
+    while (temp != NULL)
+    {
+        printf("%s\t%s\t%s\t%s\t%s\t%s\n", temp->student_id, temp->name, temp->gender, temp->class, temp->college, temp->contact);
+        temp = temp->next;
+    }
+}
+
 // 添加学生信息
 void add_student()
 {
@@ -277,9 +495,9 @@ void add_student()
     new_student->next = NULL;
 
     // 添加到链表
-    if (student_head == NULL)
+    if (student_head->next == NULL)
     {
-        student_head = new_student;
+        student_head->next = new_student;
     }
     else
     {
@@ -310,7 +528,7 @@ void add_student()
 //         printf("请选择: ");
 //         scanf("%d", &choice);
 //         clear_input_buffer();
-
+//
 //         switch (choice)
 //         {
 //         case 1:
@@ -338,6 +556,196 @@ void add_student()
 //     } while (choice != 0);
 // }
 
+// 删除学生信息
+void delete_student()
+{
+    printf("请输入你要删除的学生学号:");
+    char student_id[20];
+    fgets(student_id, 20, stdin);
+    student_id[strcspn(student_id, "\n")] = '\0';
+
+    Student *temp = student_head->next;
+    Student *prev = NULL;
+
+    while (temp != NULL && strcmp(temp->student_id, student_id) != 0)
+    {
+        prev = temp;
+        temp = temp->next;
+    }
+    if (temp == NULL)
+    {
+        SetConsoleOutputCP(936);
+        printf("没有找到该学生记录!\n");
+        return;
+    }
+    if (prev == NULL)
+    {
+        student_head->next = temp->next;
+        free(temp);
+        return;
+    }
+
+    else
+    {
+        char ch;
+        SetConsoleOutputCP(936);
+        printf("%10.2f%10.2f\n");
+        SetConsoleOutputCP(936);
+        printf("请确认是否要删除这条记录？(Y/y, N/n):");
+        getchar();
+        scanf("%c", &ch);
+        if (ch == 'Y' || ch == 'y')
+        {
+            prev->next = temp->next;
+            free(temp);
+            SetConsoleOutputCP(936);
+            printf("删除完毕\n");
+            return;
+        }
+        else if (ch == 'N' || ch == 'n')
+        {
+            SetConsoleOutputCP(936);
+            printf("找到了这个学生的记录，但不删除\n");
+            return;
+        }
+        else
+        {
+            SetConsoleOutputCP(936);
+            printf("输入出错\n");
+            return;
+        }
+    }
+}
+
+// 修改学生信息
+void modify_student()
+{
+    printf("请输入你要修改的学生学号:");
+    char student_id[20];
+    fgets(student_id, 20, stdin);
+    student_id[strcspn(student_id, "\n")] = '\0';
+
+    Student *temp = student_head->next;
+    Student *prev = NULL;
+
+    while (temp != NULL && strcmp(temp->student_id, student_id) != 0)
+    {
+        prev = temp;
+        temp = temp->next;
+    }
+    if (temp == NULL)
+    {
+        SetConsoleOutputCP(936);
+        printf("没有找到该学生记录!\n");
+        return;
+    }
+    if (prev == NULL)
+    {
+        student_head->next = temp->next;
+        free(temp);
+        return;
+    }
+
+    else
+    {
+        char ch;
+        SetConsoleOutputCP(936);
+        printf("%10.2f%10.2f\n");
+        SetConsoleOutputCP(936);
+        printf("请确认是否要修改这条记录?(Y/y, N/n):");
+        getchar();
+        scanf("%c", &ch);
+        if (ch == 'Y' || ch == 'y')
+        {
+            printf("请输入需要修改的信息,1为姓名,2为性别,3为班级,4为学院,5为联系方式\n");
+            int choice;
+            scanf("%d", &choice);
+            getchar(); // 清除换行符
+            switch (choice)
+            {
+            case 1:
+                printf("请输入新的姓名: ");
+                fgets(temp->name, MAX_NAME_LEN, stdin);
+                temp->name[strcspn(temp->name, "\n")] = '\0';
+                break;
+
+            case 2:
+                printf("请输入新的性别: ");
+                fgets(temp->gender, 10, stdin);
+                temp->gender[strcspn(temp->gender, "\n")] = '\0';
+                break;
+            case 3:
+                printf("请输入新的班级: ");
+                fgets(temp->class, MAX_CLASS_LEN, stdin);
+                temp->class[strcspn(temp->class, "\n")] = '\0';
+                break;
+            case 4:
+                printf("请输入新的学院: ");
+                fgets(temp->college, MAX_COLLEGE_LEN, stdin);
+                temp->college[strcspn(temp->college, "\n")] = '\0';
+                break;
+            case 5:
+                printf("请输入新的联系方式: ");
+                fgets(temp->contact, MAX_CONTACT_LEN, stdin);
+                temp->contact[strcspn(temp->contact, "\n")] = '\0';
+                break;
+            default:
+                SetConsoleOutputCP(936);
+                printf("无效选择!\n");
+                return;
+            }
+            SetConsoleOutputCP(936);
+            printf("修改完毕\n");
+            return;
+        }
+        else if (ch == 'N' || ch == 'n')
+        {
+            SetConsoleOutputCP(936);
+            printf("找到了这个学生的记录，但不修改\n");
+            return;
+        }
+        else
+        {
+            SetConsoleOutputCP(936);
+            printf("输入出错\n");
+            return;
+        }
+    }
+}
+
+// 查找学生信息
+void search_student()
+{
+    printf("请输入你要查找的学生学号:");
+    char student_id[20];
+    fgets(student_id, 20, stdin);
+    student_id[strcspn(student_id, "\n")] = '\0';
+
+    Student *temp = student_head->next;
+
+    while (temp != NULL && strcmp(temp->student_id, student_id) != 0)
+    {
+        temp = temp->next;
+    }
+    if (temp == NULL)
+    {
+        SetConsoleOutputCP(936);
+        printf("没有找到该学生记录!\n");
+        return;
+    }
+
+    printf("\n--- 学生信息 ---\n");
+    printf("学号: %s\n", temp->student_id);
+    printf("姓名: %s\n", temp->name);
+    printf("性别: %s\n", temp->gender);
+    printf("班级: %s\n", temp->class);
+    printf("学院: %s\n", temp->college);
+    printf("联系方式: %s\n", temp->contact);
+    printf("\n");
+}
+
+
+
 // 学生报名
 void register_student()
 {
@@ -358,7 +766,7 @@ void register_student()
     Student *student = student_head;
     while (student != NULL)
     {
-        if (strcmp(student->student_id, student_id) == 0)
+        if (strcmp(student->student_id, student_id) == 0) // 学生存在
         {
             break;
         }
