@@ -9,7 +9,7 @@
 
 #include <windows.h>
 #include <conio.h>
-
+#include <time.h>
 #define STU_NUM 50           // 教学班学生人数上限
 #define COURSE_NUM 10        // 一学期的课程上限
 #define NAME_LEN 10          // 学生姓名（字符串）最大长度

@@ -5,6 +5,39 @@ SportEvent *event_head = NULL;
 Student *student_head = NULL;
 Registration *reg_head = NULL;
 
+void load_all_data()
+{
+    if (!event_head)
+        event_head = (SportEvent *)malloc(sizeof(SportEvent));
+    if (!student_head)
+        student_head = (Student *)malloc(sizeof(Student));
+    if (!reg_head)
+        reg_head = (Registration *)malloc(sizeof(Registration));
+
+    event_head->next = NULL;
+    student_head->next = NULL;
+    reg_head->next = NULL;
+    // // 初始化链表头指针
+    // event_head = (SportEvent *)malloc(sizeof(SportEvent));
+    // student_head = (Student *)malloc(sizeof(Student));
+    // reg_head = (Registration *)malloc(sizeof(Registration));
+
+    // if (!event_head || !student_head || !reg_head)
+    // {
+    //     printf("内存分配失败!\n");
+    //     exit(EXIT_FAILURE);
+    // }
+
+    // event_head->next = NULL;
+    // student_head->next = NULL;
+    // reg_head->next = NULL;
+
+    // // 从文件加载数据
+    // load_events_from_file();
+    // load_students_from_file();
+    // load_registrations_from_file();
+}
+
 // 系统初始化
 void init_system()
 {
@@ -51,7 +84,6 @@ int Menu(void)
         }
     }
     // 输出系统支持的功能和对应的功能代号
-    SetConsoleOutputCP(936);
     SetPosition(POS_X1, ++posy);
     SetConsoleOutputCP(936);
     printf("1.显示所有项目信息");
@@ -126,7 +158,7 @@ int Menu(void)
     }
     // 提示用户输入所要执行的功能代号
     SetPosition(POS_X1, ++posy);
-    printf("请选择你想要进行的操作[0~16]: [  ]\b\b\b");
+    printf("请选择你想要进行的操作[0~20]: [  ]\b\b\b");
     scanf("%d", &option);
     return option;
 }
@@ -376,7 +408,7 @@ void search_event()
 
     while (temp != NULL && temp->event_id != event_id)
     {
-        
+
         temp = temp->next;
     }
     if (temp == NULL)
@@ -410,7 +442,6 @@ void search_event()
 //         printf("请选择: ");
 //         scanf("%d", &choice);
 //         clear_input_buffer();
-
 //         switch (choice)
 //         {
 //         case 1:
@@ -511,50 +542,6 @@ void add_student()
 
     printf("\n学生信息添加成功!\n");
 }
-// 报名管理菜单
-// void manage_registrations()
-// {
-//     int choice;
-//     do
-//     {
-//         system("clear || cls");
-//         printf("\n===== 报名管理 =====\n");
-//         printf("1. 显示所有报名\n");
-//         printf("2. 学生报名\n");
-//         printf("3. 取消报名\n");
-//         printf("4. 查找报名\n");
-//         printf("5. 录入成绩\n");
-//         printf("0. 返回主菜单\n");
-//         printf("请选择: ");
-//         scanf("%d", &choice);
-//         clear_input_buffer();
-//
-//         switch (choice)
-//         {
-//         case 1:
-//             display_all_registrations();
-//             break;
-//         case 2:
-//             register_student();
-//             break;
-//         case 3:
-//             cancel_registration();
-//             break;
-//         case 4:
-//             search_registration();
-//             break;
-//         case 5:
-//             enter_score();
-//             break;
-//         case 0:
-//             return;
-//         default:
-//             printf("无效选择!\n");
-//         }
-//         printf("\n按任意键继续...");
-//         getchar();
-//     } while (choice != 0);
-// }
 
 // 删除学生信息
 void delete_student()
@@ -744,7 +731,50 @@ void search_student()
     printf("\n");
 }
 
-
+// 报名管理菜单
+// void manage_registrations()
+// {
+//     int choice;
+//     do
+//     {
+//         system("clear || cls");
+//         printf("\n===== 报名管理 =====\n");
+//         printf("1. 显示所有报名\n");
+//         printf("2. 学生报名\n");
+//         printf("3. 取消报名\n");
+//         printf("4. 查找报名\n");
+//         printf("5. 录入成绩\n");
+//         printf("0. 返回主菜单\n");
+//         printf("请选择: ");
+//         scanf("%d", &choice);
+//         clear_input_buffer();
+//
+//         switch (choice)
+//         {
+//         case 1:
+//             display_all_registrations();
+//             break;
+//         case 2:
+//             register_student();
+//             break;
+//         case 3:
+//             cancel_registration();
+//             break;
+//         case 4:
+//             search_registration();
+//             break;
+//         case 5:
+//             enter_score();
+//             break;
+//         case 0:
+//             return;
+//         default:
+//             printf("无效选择!\n");
+//         }
+//         printf("\n按任意键继续...");
+//         getchar();
+//     } while (choice != 0);
+// }
 
 // 学生报名
 void register_student()
@@ -785,7 +815,7 @@ void register_student()
 
     printf("\n请输入项目编号: ");
     scanf("%d", &event_id);
-    clear_input_buffer();
+    // getchar(); // 清除换行符
 
     // 检查项目是否存在
     SportEvent *event = event_head;
@@ -847,9 +877,9 @@ void register_student()
     new_reg->next = NULL;
 
     // 添加到链表
-    if (reg_head == NULL)
+    if (reg_head->next == NULL)
     {
-        reg_head = new_reg;
+        reg_head->next = new_reg;
     }
     else
     {
@@ -865,4 +895,591 @@ void register_student()
     event->current_participants++;
 
     printf("\n报名成功! 报名编号: %d\n", new_reg->reg_id);
+}
+
+// 生成唯一报名编号
+int generate_reg_id()
+
+{
+    int max_id = 0;
+    Registration *current = reg_head->next;
+    while (current != NULL)
+    {
+        if (current->reg_id > max_id)
+            max_id = current->reg_id;
+        current = current->next;
+    }
+    return max_id + 1;
+}
+
+void search_registration()
+{
+    int choice;
+    printf("请选择查找方式:1.报名编号 2.学号 3.项目编号\n");
+    scanf("%d", &choice);
+    getchar(); // 清除换行符
+
+    Registration *temp = reg_head->next;
+    int reg_id, event_id;
+    char student_id[20];
+    int found = 0;
+
+    if (choice == 1)
+    {
+        printf("请输入报名编号：");
+        scanf("%d", &reg_id);
+        getchar();
+        while (temp != NULL)
+        {
+            if (temp->reg_id == reg_id)
+            {
+                printf("\n--- 报名信息 ---\n");
+                printf("报名编号: %d\n", temp->reg_id);
+                printf("学号: %s\n", temp->student_id);
+                printf("项目编号: %d\n", temp->event_id);
+                printf("报名时间: %s\n", temp->reg_time);
+                if (temp->score < 0)
+                    printf("成绩: 未录入\n");
+                else
+                    printf("成绩: %.2f\n", temp->score);
+                found = 1;
+                break; // 报名编号唯一，找到就退出
+            }
+            temp = temp->next;
+        }
+    }
+    else if (choice == 2)
+    {
+        printf("请输入学号：");
+        fgets(student_id, 20, stdin);
+        student_id[strcspn(student_id, "\n")] = '\0';
+        while (temp != NULL)
+        {
+            if (strcmp(temp->student_id, student_id) == 0)
+            {
+                printf("\n--- 报名信息 ---\n");
+                printf("报名编号: %d\n", temp->reg_id);
+                printf("学号: %s\n", temp->student_id);
+                printf("项目编号: %d\n", temp->event_id);
+                printf("报名时间: %s\n", temp->reg_time);
+                if (temp->score < 0)
+                    printf("成绩: 未录入\n");
+                else
+                    printf("成绩: %.2f\n", temp->score);
+                found = 1;
+            }
+            temp = temp->next;
+        }
+    }
+    else if (choice == 3)
+    {
+        printf("请输入项目编号：");
+        scanf("%d", &event_id);
+        getchar();
+        while (temp != NULL)
+        {
+            if (temp->event_id == event_id)
+            {
+                printf("\n--- 报名信息 ---\n");
+                printf("报名编号: %d\n", temp->reg_id);
+                printf("学号: %s\n", temp->student_id);
+                printf("项目编号: %d\n", temp->event_id);
+                printf("报名时间: %s\n", temp->reg_time);
+                if (temp->score < 0)
+                    printf("成绩: 未录入\n");
+                else
+                    printf("成绩: %.2f\n", temp->score);
+                found = 1;
+            }
+            temp = temp->next;
+        }
+    }
+    else
+    {
+        printf("无效选择！\n");
+        return;
+    }
+
+    if (!found)
+    {
+        printf("没有找到该报名信息！\n");
+    }
+}
+// 取消报名
+void cancel_registration()
+{
+    int reg_id;
+    printf("\n--- 取消报名 ---\n");
+    printf("请输入报名编号: ");
+    scanf("%d", &reg_id);
+    getchar(); // 清除换行符
+
+    Registration *temp = reg_head->next;
+    Registration *prev = reg_head;
+
+    while (temp != NULL && temp->reg_id != reg_id)
+    {
+        prev = temp;
+        temp = temp->next;
+    }
+
+    if (temp == NULL)
+    {
+        printf("没有找到该报名记录!\n");
+        return;
+    }
+
+    // 找到报名记录，删除它
+    prev->next = temp->next;
+    free(temp);
+
+    // 更新项目报名人数
+    SportEvent *event = event_head->next;
+    while (event != NULL)
+    {
+        if (event->event_id == temp->event_id)
+        {
+            event->current_participants--;
+            break;
+        }
+        event = event->next;
+    }
+
+    printf("取消报名成功!\n");
+}
+// 比较函数，按报名时间字符串升序
+int cmp_reg_time(const void *a, const void *b)
+{
+    Registration *ra = *(Registration **)a;
+    Registration *rb = *(Registration **)b;
+    return strcmp(ra->reg_time, rb->reg_time);
+}
+// 显示所有报名信息
+void display_all_registrations()
+{
+    // 统计报名数量
+    int count = 0;
+    Registration *temp = reg_head->next;
+    while (temp)
+    {
+        count++;
+        temp = temp->next;
+    }
+    if (count == 0)
+    {
+        printf("没有报名信息！\n");
+        return;
+    }
+
+    // 存指针到数组
+    Registration **arr = (Registration **)malloc(count * sizeof(Registration *));
+    temp = reg_head->next;
+    for (int i = 0; i < count; i++)
+    {
+        arr[i] = temp;
+        temp = temp->next;
+    }
+
+    // 排序
+    qsort(arr, count, sizeof(Registration *), cmp_reg_time);
+
+    // 输出
+    printf("\n报名编号\t学号\t项目编号\t报名时间\t\t成绩\n");
+    for (int i = 0; i < count; i++)
+    {
+        printf("%d\t%s\t%d\t%s\t", arr[i]->reg_id, arr[i]->student_id, arr[i]->event_id, arr[i]->reg_time);
+        if (arr[i]->score < 0)
+            printf("未录入\n");
+        else
+            printf("%.2f\n", arr[i]->score);
+    }
+    free(arr);
+}
+
+void enter_score()
+{
+    int choice;
+    printf("请选择录入方式：1.报名编号 2.学号\n");
+    scanf("%d", &choice);
+    getchar();
+
+    Registration *temp = reg_head->next;
+    int reg_id;
+    char student_id[20];
+
+    if (choice == 1)
+    {
+        printf("请输入报名编号：");
+        scanf("%d", &reg_id);
+        getchar();
+        while (temp != NULL)
+        {
+            if (temp->reg_id == reg_id)
+                break;
+            temp = temp->next;
+        }
+    }
+    else if (choice == 2)
+    {
+        printf("请输入学号：");
+        fgets(student_id, 20, stdin);
+        student_id[strcspn(student_id, "\n")] = '\0';
+        while (temp != NULL)
+        {
+            if (strcmp(temp->student_id, student_id) == 0)
+                break;
+            temp = temp->next;
+        }
+    }
+    else
+    {
+        printf("无效选择！\n");
+        return;
+    }
+
+    if (temp == NULL)
+    {
+        printf("没有找到该报名信息！\n");
+        return;
+    }
+
+    printf("请输入成绩：");
+    scanf("%f", &temp->score);
+    printf("成绩录入成功！\n");
+}
+
+// 统计每个项目的报名人数
+void count_event_participants()
+{
+    SportEvent *event = event_head->next;
+    printf("\n项目编号\t项目名称\t报名人数\n");
+    while (event)
+    {
+        printf("%d\t%s\t%d\n", event->event_id, event->name, event->current_participants);
+        event = event->next;
+    }
+}
+
+// 统计每个学院的报名人数
+void count_college_participants()
+{
+    // 假设学院数量有限，统计每个学院的报名人数
+    typedef struct
+    {
+        char college[MAX_COLLEGE_LEN];
+        int count;
+    } CollegeCount;
+    CollegeCount colleges[100];
+    int college_num = 0;
+
+    Registration *reg = reg_head->next;
+    while (reg)
+    {
+        // 找到学生
+        Student *stu = student_head->next;
+        while (stu && strcmp(stu->student_id, reg->student_id) != 0)
+            stu = stu->next;
+        if (stu)
+        {
+            // 查找学院是否已统计
+            int found = 0;
+            for (int i = 0; i < college_num; i++)
+            {
+                if (strcmp(colleges[i].college, stu->college) == 0)
+                {
+                    colleges[i].count++;
+                    found = 1;
+                    break;
+                }
+            }
+            if (!found && college_num < 100)
+            {
+                strcpy(colleges[college_num].college, stu->college);
+                colleges[college_num].count = 1;
+                college_num++;
+            }
+        }
+        reg = reg->next;
+    }
+    printf("\n学院\t报名人数\n");
+    for (int i = 0; i < college_num; i++)
+    {
+        printf("%s\t%d\n", colleges[i].college, colleges[i].count);
+    }
+}
+
+// 统计每个学生的报名项目数
+void count_student_registrations()
+{
+    // 假设学生数量有限
+    typedef struct
+    {
+        char student_id[20];
+        char name[MAX_NAME_LEN];
+        int count;
+    } StuCount;
+    StuCount stus[1000];
+    int stu_num = 0;
+
+    Registration *reg = reg_head->next;
+    while (reg)
+    {
+        // 查找学生
+        int found = 0;
+        for (int i = 0; i < stu_num; i++)
+        {
+            if (strcmp(stus[i].student_id, reg->student_id) == 0)
+            {
+                stus[i].count++;
+                found = 1;
+                break;
+            }
+        }
+        if (!found && stu_num < 1000)
+        {
+            // 查找学生姓名
+            Student *stu = student_head->next;
+            while (stu && strcmp(stu->student_id, reg->student_id) != 0)
+                stu = stu->next;
+            strcpy(stus[stu_num].student_id, reg->student_id);
+            if (stu)
+                strcpy(stus[stu_num].name, stu->name);
+            else
+                strcpy(stus[stu_num].name, "未知");
+            stus[stu_num].count = 1;
+            stu_num++;
+        }
+        reg = reg->next;
+    }
+    printf("\n学号\t姓名\t报名项目数\n");
+    for (int i = 0; i < stu_num; i++)
+    {
+        printf("%s\t%s\t%d\n", stus[i].student_id, stus[i].name, stus[i].count);
+    }
+}
+
+// 查询比赛成绩
+
+// 比较函数，成绩高的排前面
+int cmp_score_desc(const void *a, const void *b)
+{
+    Registration *ra = *(Registration **)a;
+    Registration *rb = *(Registration **)b;
+    if (ra->score < rb->score)
+        return 1;
+    if (ra->score > rb->score)
+        return -1;
+    return 0;
+}
+
+void query_results()
+{
+    int event_id;
+    char student_id[20];
+    int choice;
+    printf("请选择查询方式:1.按项目编号 2.按学号\n");
+    scanf("%d", &choice);
+    getchar();
+
+    if (choice == 1)
+    {
+        printf("请输入要查询成绩的项目编号: ");
+        scanf("%d", &event_id);
+        getchar();
+
+        // 统计成绩数量
+        int count = 0;
+        Registration *reg = reg_head->next;
+        while (reg)
+        {
+            if (reg->event_id == event_id && reg->score >= 0)
+                count++;
+            reg = reg->next;
+        }
+        if (count == 0)
+        {
+            printf("该项目暂无成绩！\n");
+            return;
+        }
+
+        // 存指针到数组
+        Registration **arr = (Registration **)malloc(count * sizeof(Registration *));
+        reg = reg_head->next;
+        int idx = 0;
+        while (reg)
+        {
+            if (reg->event_id == event_id && reg->score >= 0)
+                arr[idx++] = reg;
+            reg = reg->next;
+        }
+
+        // 排序
+        qsort(arr, count, sizeof(Registration *), cmp_score_desc);
+
+        // 输出
+        printf("\n排名\t报名编号\t学号\t成绩\n");
+        for (int i = 0; i < count; i++)
+        {
+            printf("%d\t%d\t%s\t%.2f\n", i + 1, arr[i]->reg_id, arr[i]->student_id, arr[i]->score);
+        }
+        free(arr);
+    }
+    else if (choice == 2)
+    {
+        printf("请输入学号: ");
+        fgets(student_id, 20, stdin);
+        student_id[strcspn(student_id, "\n")] = '\0';
+
+        printf("\n报名编号\t项目编号\t成绩\n");
+        Registration *reg = reg_head->next;
+        int found = 0;
+        while (reg)
+        {
+            if (strcmp(reg->student_id, student_id) == 0)
+            {
+                printf("%d\t%d\t", reg->reg_id, reg->event_id);
+                if (reg->score < 0)
+                    printf("未录入\n");
+                else
+                    printf("%.2f\n", reg->score);
+                found = 1;
+            }
+            reg = reg->next;
+        }
+        if (!found)
+        {
+            printf("该学号暂无成绩信息！\n");
+        }
+    }
+    else
+    {
+        printf("无效选择！\n");
+    }
+}
+
+// 保存统计信息到文件
+void save_statistics()
+{
+
+    FILE *fp = fopen("statistics.txt", "w");
+    if (!fp)
+    {
+        printf("无法打开文件保存统计信息！\n");
+        return;
+    }
+    // 保存每个项目的报名人数
+    fprintf(fp, "项目编号\t项目名称\t报名人数\n");
+    SportEvent *event = event_head->next;
+    while (event)
+    {
+        fprintf(fp, "%d\t%s\t%d\n", event->event_id, event->name, event->current_participants);
+        event = event->next;
+    }
+    // 保存每个学院的报名人数
+    fprintf(fp, "\n学院\t报名人数\n");
+    // 复用上面的统计逻辑
+    typedef struct
+    {
+        char college[MAX_COLLEGE_LEN];
+        int count;
+    } CollegeCount;
+    CollegeCount colleges[100];
+    int college_num = 0;
+    Registration *reg = reg_head->next;
+    while (reg)
+    {
+        Student *stu = student_head->next;
+        while (stu && strcmp(stu->student_id, reg->student_id) != 0)
+            stu = stu->next;
+        if (stu)
+        {
+            int found = 0;
+            for (int i = 0; i < college_num; i++)
+            {
+                if (strcmp(colleges[i].college, stu->college) == 0)
+                {
+                    colleges[i].count++;
+                    found = 1;
+                    break;
+                }
+            }
+            if (!found && college_num < 100)
+            {
+                strcpy(colleges[college_num].college, stu->college);
+                colleges[college_num].count = 1;
+                college_num++;
+            }
+        }
+        reg = reg->next;
+    }
+    for (int i = 0; i < college_num; i++)
+    {
+        fprintf(fp, "%s\t%d\n", colleges[i].college, colleges[i].count);
+    }
+    // 保存每个学生的报名项目数
+    fprintf(fp, "\n学号\t姓名\t报名项目数\n");
+    typedef struct
+    {
+        char student_id[20];
+        char name[MAX_NAME_LEN];
+        int count;
+    } StuCount;
+    StuCount stus[1000];
+    int stu_num = 0;
+    reg = reg_head->next;
+    while (reg)
+    {
+        int found = 0;
+        for (int i = 0; i < stu_num; i++)
+        {
+            if (strcmp(stus[i].student_id, reg->student_id) == 0)
+            {
+                stus[i].count++;
+                found = 1;
+                break;
+            }
+        }
+        if (!found && stu_num < 1000)
+        {
+            Student *stu = student_head->next;
+            while (stu && strcmp(stu->student_id, reg->student_id) != 0)
+                stu = stu->next;
+            strcpy(stus[stu_num].student_id, reg->student_id);
+            if (stu)
+                strcpy(stus[stu_num].name, stu->name);
+            else
+                strcpy(stus[stu_num].name, "未知");
+            stus[stu_num].count = 1;
+            stu_num++;
+        }
+        reg = reg->next;
+    }
+    for (int i = 0; i < stu_num; i++)
+    {
+        fprintf(fp, "%s\t%s\t%d\n", stus[i].student_id, stus[i].name, stus[i].count);
+    }
+    fclose(fp);
+    printf("统计信息已保存到 statistics.txt 文件！\n");
+}
+
+// 判断某学生是否已报名某项目
+int is_student_registered(char *student_id, int event_id)
+{
+    Registration *reg = reg_head->next;
+    while (reg)
+    {
+        if (strcmp(reg->student_id, student_id) == 0 && reg->event_id == event_id)
+            return 1; // 已报名
+        reg = reg->next;
+    }
+    return 0; // 未报名
+}
+
+// 获取当前时间字符串（格式：YYYY-MM-DD HH:MM:SS）
+
+void get_current_time(char *time_str)
+{
+    time_t now = time(NULL);
+    struct tm *t = localtime(&now);
+    strftime(time_str, 20, "%Y-%m-%d %H:%M:%S", t);
 }

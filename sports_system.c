@@ -1,15 +1,39 @@
 #include "sports.h"
 
+// 声明外部变量 event_head 和 student_head
+extern SportEvent *event_head;
+extern Student *student_head;
+
 int main()
 {
     int option;
-    system("mode con cols=130 lines=60"); // 设置控制台窗口大小
-    init_system();                        // 初始化系统数据
+    int first_event = 1, first_student = 1; // 标记是否已添加过项目和学生
+    system("mode con cols=130 lines=60");   // 设置控制台窗口大小
+    init_system();                          // 初始化系统数据
     system("color 0E");
+    SetConsoleOutputCP(936);
     while (1)
     {
+        SetConsoleOutputCP(936);
         system("cls"); // 清屏
         option = Menu();
+
+        // 判断是否需要先添加项目或学生
+        if ((option >= 3 && option <= 5 || option == 11 || option == 13 || option == 14 || option == 15 || option == 16 || option == 17 || option == 18 || option == 19 || option == 20) && (event_head->next == NULL))
+        {
+            SetConsoleOutputCP(936);
+            printf("系统中尚无项目信息，请先输入！\n");
+            system("pause");
+            continue;
+        }
+        if ((option >= 8 && option <= 10 || option == 11 || option == 13 || option == 14 || option == 15 || option == 17 || option == 18 || option == 19 || option == 20) && (student_head->next == NULL))
+        {
+            SetConsoleOutputCP(936);
+            printf("系统中尚无学生信息，请先输入！\n");
+            system("pause");
+            continue;
+        }
+
         switch (option)
         {
         case 1:
@@ -58,33 +82,31 @@ int main()
             enter_score();
             break;
         case 16:
-            stat_event_participants();
+            count_event_participants();
             break;
         case 17:
-            stat_college_participants();
+            count_college_participants();
             break;
         case 18:
-            stat_student_event_count();
+            count_student_registrations();
             break;
         case 19:
-            query_scores();
+            query_results();
             break;
         case 20:
-            save_all_data();
+            save_statistics();
             printf("统计信息已保存到文件！\n");
             break;
         case 0:
-            save_all_data();
             SetPosition(0, 10);
             printf("退出！\n");
-            return 0;
+            exit(0);
         default:
             SetPosition(0, 10);
             printf("无效选择，请重新输入！\n");
             break;
+            system("pause");
         }
-        printf("\n按任意键返回主菜单...");
-        getchar();
         getchar();
     }
     return 0;
