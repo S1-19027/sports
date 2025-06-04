@@ -7,13 +7,23 @@
 #include <time.h>
 #include <ctype.h>
 
-#define MAX_NAME_LEN 50
-#define MAX_TYPE_LEN 20
-#define MAX_LOCATION_LEN 100
-#define MAX_CONTACT_LEN 20
-#define MAX_COLLEGE_LEN 50
-#define MAX_CLASS_LEN 30
+#include <windows.h>
+#include <conio.h>
 
+#define STU_NUM 50           // 教学班学生人数上限
+#define COURSE_NUM 10        // 一学期的课程上限
+#define NAME_LEN 10          // 学生姓名（字符串）最大长度
+#define POS_X1 35            // 1、菜单页，第一列所有功能输出起始位置的x坐标值；2、排序之后输出提示起点的X坐标值
+#define POS_X2 40            // 输入模块的提示语句起点的X坐标值
+#define POS_X3 50            // 第一次，调用输入模块或磁盘数据读入模块功能以外的其他功能，提示“系统中尚无学生成绩信息，请先输入”的起始位置的X坐标值
+#define POS_X4 65            // 菜单页，第二列所有功能输出起始位置的x坐标值；
+#define POS_Y 3              // 排序之后输出提示起点的Y坐标值
+#define MAX_NAME_LEN 50      // 项目名称上限
+#define MAX_TYPE_LEN 20      // 项目类型上限
+#define MAX_LOCATION_LEN 100 // 比赛地点上限
+#define MAX_CONTACT_LEN 20   // 联系方式上限
+#define MAX_COLLEGE_LEN 50   // 学院名称上限
+#define MAX_CLASS_LEN 30     // 班级数上限
 // 运动项目结构体
 typedef struct SportEvent
 {
