@@ -5,6 +5,48 @@ SportEvent *event_head = NULL;
 Student *student_head = NULL;
 Registration *reg_head = NULL;
 
+// 登录系统
+void login_system() {
+    char username[20];
+    char password[20];
+    int attempts = 3;
+    
+    while (attempts > 0) {
+        system("cls");
+        printf("\n===== 运动会报名系统登录 =====\n");
+        printf("用户名: ");
+        scanf("%s", username);
+        printf("密码: ");
+        // 密码输入不回显
+        int i = 0;
+        char ch;
+        while ((ch = _getch()) != '\r') {
+            if (ch == '\b' && i > 0) {
+                printf("\b \b");
+                i--;
+            } else if (ch != '\b') {
+                password[i++] = ch;
+                printf("*");
+            }
+        }
+        password[i] = '\0';
+        
+        // 简单验证（实际应用中应加密存储）
+        if (strcmp(username, "admin") == 0 && strcmp(password, "admin") == 0) {
+            printf("\n登录成功！\n");
+            Sleep(1000);
+            return;
+        } else {
+            attempts--;
+            printf("\n用户名或密码错误，剩余尝试次数: %d\n", attempts);
+            Sleep(1500);
+        }
+    }
+    
+    printf("\n登录失败，系统退出！\n");
+    exit(0);
+}
+
 void load_all_data()
 {
     if (!event_head)
@@ -244,6 +286,7 @@ void delete_event()
     printf("请输入你要删除的项目id:");
     int event_id;
     scanf("%d", &event_id);
+    getchar();  // 清除换行符
     SportEvent *temp = event_head->next;
     SportEvent *prev = NULL;
 
