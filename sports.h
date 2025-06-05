@@ -15,7 +15,7 @@
 #define NAME_LEN 10          // 学生姓名（字符串）最大长度
 #define POS_X1 35            // 1、菜单页，第一列所有功能输出起始位置的x坐标值；2、排序之后输出提示起点的X坐标值
 #define POS_X2 40            // 输入模块的提示语句起点的X坐标值
-#define POS_X3 50            // 第一次，调用输入模块或磁盘数据读入模块功能以外的其他功能，提示“系统中尚无学生成绩信息，请先输入”的起始位置的X坐标值
+#define POS_X3 50            // 第一次，调用输入模块或磁盘数据读入模块功能以外的其他功能，提示"系统中尚无学生成绩信息，请先输入"的起始位置的X坐标值
 #define POS_X4 65            // 菜单页，第二列所有功能输出起始位置的x坐标值；
 #define POS_Y 3              // 排序之后输出提示起点的Y坐标值
 #define MAX_NAME_LEN 50      // 项目名称上限
@@ -66,6 +66,10 @@ typedef struct Registration
 void init_system();
 int Menu(void);                 // 操作菜单
 void SetPosition(int x, int y); // 设置输出内容在控制台窗口中的起始位置
+
+// 登录系统
+void login_system();
+
 // 运动项目管理函数
 // void manage_events();
 void display_all_events(); // 显示所有运动项目信息
