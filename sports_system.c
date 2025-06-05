@@ -9,6 +9,10 @@ int main()
     int option;
     int first_event = 1, first_student = 1; // 标记是否已添加过项目和学生
     system("mode con cols=130 lines=60");   // 设置控制台窗口大小
+        
+    // 添加登录验证
+    login_system();
+    
     init_system();                          // 初始化系统数据
     system("color 0E");
     SetConsoleOutputCP(65001);
